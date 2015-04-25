@@ -26,5 +26,12 @@ extern int64_t wieferich(int64_t);
 extern int64_t wieferich3(int64_t);
 extern int64_t wieferich5(int64_t);
 extern int64_t wieferich7(int64_t);
+extern int64_t wieferich11(int64_t);
+extern int64_t wieferich13(int64_t);
+extern int64_t wieferich17(int64_t);
+extern int64_t wieferich19(int64_t);
+extern int64_t wieferich23(int64_t);
+extern int64_t wieferich29(int64_t);
+extern int64_t wieferich31(int64_t);
 
 #endif /* FERMAT_H */

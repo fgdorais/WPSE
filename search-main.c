@@ -1,6 +1,6 @@
 /* 
  * This file is part of the WPSE project.
- * Copyright (C) 2005, 2006, 2007, 2008, 2009 F. G. Dorais.
+ * Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010 F. G. Dorais.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -36,7 +36,7 @@
 
 void vers() {
   printf(PACKAGE_STRING" - Search Engine\n"
-	 "Copyright (C) 2009 F. G. Dorais.\n"
+	 "Copyright (C) 2010 F. G. Dorais.\n"
 	 "\n"
 	 "This is free software.  You may redistribute copies of it under the terms of\n"
 	 "the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.\n"
@@ -47,7 +47,7 @@ void vers() {
 }
 
 void help() {
-  printf("USAGE: search [-WF02357] [-b BOUND] BASE RMIN RMAX\n"
+  printf("USAGE: search [-WF02357] [-a A] [-b BOUND] BASE RMIN RMAX\n"
 	 "\n"
 	 "Search the arithmetic progression\n"
 	 "\n"
@@ -61,7 +61,8 @@ void help() {
 	 "  -3  Base 3 Wieferich primes\n"
 	 "  -5  Base 5 Wieferich primes\n"
 	 "  -7  Base 7 Wieferich primes\n"
-	 "  -0  All (for testing only)\n"
+	 "  -a  Base A Wieferich primes; A in {2,3,5,7,11,13,17,19,23,29,31}\n"
+	 "  -0  Null (for testing only)\n"
 	 "\n"
 	 "Pseudoprimes whose Fermat/Fibonacci quotients are at most\n"
 	 "BOUND in absolute value will be reported.\n"
@@ -81,12 +82,19 @@ static int64_t nulltest (int64_t num) { return 0; }
 #define TEST_WIEFERICH3 (2)
 #define TEST_WIEFERICH5 (3)
 #define TEST_WIEFERICH7 (4)
-#define TEST_NULL (5)
+#define TEST_WIEFERICH11 (5)
+#define TEST_WIEFERICH13 (6)
+#define TEST_WIEFERICH17 (7)
+#define TEST_WIEFERICH19 (8)
+#define TEST_WIEFERICH23 (9)
+#define TEST_WIEFERICH29 (10)
+#define TEST_WIEFERICH31 (11)
+#define TEST_NULL (12)
 
 static const char* test_name[TEST_NULL+1] = 
-  {"WIEFERICH", "FIBONACCI", "WIEFERICH3", "WIEFERICH5", "WIEFERICH7", "NULLTEST"};
+  {"WIEFERICH", "FIBONACCI", "WIEFERICH3", "WIEFERICH5", "WIEFERICH7", "WIEFERICH11", "WIEFERICH13", "WIEFERICH17", "WIEFERICH19", "WIEFERICH23", "WIEFERICH29", "WIEFERICH31", "NULLTEST"};
 static const func_t test_func[TEST_NULL+1] = 
-  {wieferich, fibonacci, wieferich3, wieferich5, wieferich7, nulltest};
+  {wieferich, fibonacci, wieferich3, wieferich5, wieferich7, wieferich11, wieferich13, wieferich17, wieferich19, wieferich23, wieferich29, wieferich31, nulltest};
 
 int
 main (argc, argv)
@@ -102,10 +110,50 @@ main (argc, argv)
   double size;
   double time;
 
-  while ((option = getopt(argc, argv, "b:hvFW23570")) != -1)
+  while ((option = getopt(argc, argv, "a:b:hvFW23570")) != -1)
     {
       switch (option)
 	{
+	case 'a':
+	  switch(atoi(optarg)) 
+	    {
+	    case 2:
+	      test = TEST_WIEFERICH;
+	      break;
+	    case 3:
+	      test = TEST_WIEFERICH3;
+	      break;
+	    case 5:
+	      test = TEST_WIEFERICH5;
+	      break;
+	    case 7:
+	      test = TEST_WIEFERICH7;
+	      break;
+	    case 11:
+	      test = TEST_WIEFERICH11;
+	      break;
+	    case 13:
+	      test = TEST_WIEFERICH13;
+	      break;
+	    case 17:
+	      test = TEST_WIEFERICH17;
+	      break;
+	    case 19:
+	      test = TEST_WIEFERICH19;
+	      break;
+	    case 23:
+	      test = TEST_WIEFERICH23;
+	      break;
+	    case 29:
+	      test = TEST_WIEFERICH29;
+	      break;
+	    case 31:
+	      test = TEST_WIEFERICH31;
+	      break;
+	    default:
+	      fprintf(stderr, "search: Invalid Wieferich base\n");	      
+	    }	  
+	  break;
 	case 'b':
 	  if (sscanf(optarg, "%"SCNu32, &bound) != 1)
 	    {

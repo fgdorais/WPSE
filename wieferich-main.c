@@ -1,6 +1,6 @@
 /* 
  * This file is part of the WPSE project.
- * Copyright (C) 2005, 2006, 2007, 2008, 2009 F. G. Dorais.
+ * Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010 F. G. Dorais.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -33,7 +33,7 @@ void
 vers() 
 {
   printf(PACKAGE_STRING" - Wieferich Test\n"
-	 "Copyright (C) 2009 F. G. Dorais.\n"
+	 "Copyright (C) 2010 F. G. Dorais.\n"
 	 "\n"
 	 "This is free software.  You may redistribute copies of it under the terms of\n"
 	 "the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.\n"
@@ -56,13 +56,14 @@ help()
 	 "be an Euler pseudoprime in base 2, 3, 5, or 7.\n"
 	 "\n"
 	 "Options:\n"
-	 "  -2  Use base 2 (default).\n"
-	 "  -3  Use base 3.\n"
-	 "  -5  Use base 5.\n"
-	 "  -7  Use base 7.\n"
-	 "  -c  Continue after errors.\n"
-	 "  -h  Output this help.\n"
-	 "  -v  Output version info.\n"
+	 "  -2\tUse base 2 (default).\n"
+	 "  -3\tUse base 3.\n"
+	 "  -5\tUse base 5.\n"
+	 "  -7\tUse base 7.\n"
+	 "  -a A\tUse base A in {2,3,5,7,11,13,17,19,23,29,31}.\n"
+	 "  -c\tContinue after errors.\n"
+	 "  -h\tOutput this help.\n"
+	 "  -v\tOutput version info.\n"
 	 "\n",
 	 INT64_MAX);
 
@@ -81,7 +82,7 @@ main (argc, argv)
   int option;
   int ind;
 
-  while ((option = getopt(argc, argv, "2357chv")) != -1)
+  while ((option = getopt(argc, argv, "2357chva:")) != -1)
     {
       switch (option)
 	{
@@ -96,6 +97,9 @@ main (argc, argv)
 	  break;
 	case '7':
 	  base = 7;
+	  break;
+	case 'a':
+	  base = atoi(optarg);
 	  break;
 	case 'c':
 	  optvec |= OPT_CONTINUE;
@@ -131,6 +135,20 @@ main (argc, argv)
 	quo = wieferich5(num);
       else if (base == 7)
 	quo = wieferich7(num);
+      else if (base == 11)
+	quo = wieferich11(num);
+      else if (base == 13)
+	quo = wieferich13(num);
+      else if (base == 17)
+	quo = wieferich17(num);
+      else if (base == 19)
+	quo = wieferich19(num);
+      else if (base == 23)
+	quo = wieferich23(num);
+      else if (base == 29)
+	quo = wieferich29(num);
+      else if (base == 31)
+	quo = wieferich31(num);
       else
 	{
 	  fprintf(stderr, "wieferich: Invalid base\n");
